@@ -105,3 +105,17 @@ The URL API supports urls conforming to http and https schemes.
 __Note:__ The Workers’ Runtime’s URL class behavior differs from the URL Spec documented above. If you’d like to use another URL implementation, you can [shim the URL class using webpack](/cli-wrangler/webpack/#shimming-globals).
 
 </Aside>
+
+--------------------------------
+
+## AbortController
+
+The AbortController API provides a common model for canceling async operations.
+
+[Go to the docs](https://developer.mozilla.org/en-US/docs/Web/API/AbortController)
+
+<Aside>
+
+__Note:__ The Workers' Runtime's AbortController is not yet integrated into the implementation of the [FetchAPI](/runtime-apis/fetch).
+
+</Aside>
