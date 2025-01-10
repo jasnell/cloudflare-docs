@@ -12,7 +12,7 @@ disable_flag: "enable_top_level_await_in_require"
 ---
 
 Workers implements the ability to use the Node.js style `require(...)` method
-to import modules in the worker bundle. Historically, this mechanism allowed
+to import modules in the Worker bundle. Historically, this mechanism allowed
 required modules to use top-level await. This, however, is not Node.js
 compatible.
 
