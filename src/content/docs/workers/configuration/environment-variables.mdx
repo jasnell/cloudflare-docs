@@ -104,6 +104,40 @@ Select the **Secret** type if your environment variable is a [secret](/workers/c
 
 <Render file="env_and_secrets" />
 
+## Environment variables and Node.js compatibility
+
+When using the `nodejs_compat` and `nodejs_compat_populate_process_env` compatibility
+flags, environment variables will also be available via the global `process.env`.
+
+Text variable values are exposed directly.
+
+JSON variable values that evaluate to string values are exposed as the parsed value.
+
+JSON variable values that do not evaluate to string values are exposed as the raw
+JSON string.
+
+For example, imagine a worker with three environment variables, one text value, and
+two JSON values:
+
+* `FOO` with plaintext value `abc`,
+* `BAR` with JSON value `"abc"`,
+* `BAZ` with JSON value `"{ "a": 123 }"`
+
+The value of `process.env.FOO` will be the JavaScript string `"abc"`.
+
+The value of `process.env.BAR` will be the JavaScript string `"abc"` (note that the
+JSON encoding is removed).
+
+The value of `process.env.BAZ` will be the JSON-encoded string `"{ "a": 123 }"`.
+
+These rules mean that if you have a JSON environment variable whose value is a
+JSON-encoded string and you *want* to be able to parse it as JSON within your
+application (e.g. `JSON.parse(process.env.BAR)`) then the value will need to
+be "double encoded", for instance `'"\\"abc\\""'`.
+
+Note also that because secrets are a form of environment variable within the runtime,
+secrets are also exposed via `process.env`.
+
 ## Related resources
 
 * Learn how to access environment variables in [ES modules syntax](/workers/reference/migrate-to-module-workers/) for an optimized experience.

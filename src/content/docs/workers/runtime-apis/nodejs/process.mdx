@@ -30,7 +30,14 @@ In the Node.js implementation of `process.env`, the `env` object is a copy of th
 
 ### Relationship to per-request `env` argument in `fetch()` handlers
 
-Workers do have a concept of [environment variables](/workers/configuration/environment-variables/) that are applied on a per-Worker and per-request basis. These are not accessible automatically via the `process.env` API. It is possible to manually copy these values into `process.env` if you need to. Be aware, however, that setting any value on `process.env` will coerce that value into a string.
+Workers have a concept of [environment variables](/workers/configuration/environment-variables/) that are applied on a per-Worker and per-request basis.
+
+By default, these are not accessible automatically via the `process.env` API. It is
+possible to have environment variables automatically populated into `process.env` using
+the `nodejs_compat_populate_process_env` compatibility flag. It is also possible to
+manually copy these values into `process.env` if necessary.
+
+Setting any value on `process.env` will coerce that value into a string.
 
 ```js
 import * as process from 'node:process';
@@ -48,19 +55,8 @@ export default {
 };
 ```
 
-It is strongly recommended that you *do not* replace the entire `process.env` object with the request `env` object. Doing so will cause you to lose any environment variables that were set previously and will cause unexpected behavior for other Workers running in the same isolate. Specifically, it would cause inconsistency with the `process.env` object when accessed via named imports.
-
-```js
-import * as process from 'node:process';
-import { env } from 'node:process';
-
-process.env === env; // true! they are the same object
-process.env = {}; // replace the object! Do not do this!
-process.env === env; // false! they are no longer the same object
-
-// From this point forward, any changes to process.env will not be reflected in env,
-// and vice versa!
-```
+Refer to the [environment variables](/workers/configuration/environment-variables/)
+documentation for more detail.
 
 ## `process.nextTick()`
 
